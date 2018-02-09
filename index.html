@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RPG</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+        <h1>THIS IS AN RPG</h1>
+        </div>
+        <div class="row characters"></div>
+        <div class="row gameplay"></div>
+    </div>
+<script
+  src="http://code.jquery.com/jquery-2.2.4.js"
+  integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    // array of char objs
+    var charArr = [
+        {
+            name: "Phoebe Buffay",
+            hp: 30,
+            image: "download-3.jpg"
+
+        },
+        {
+            name: "Rachel Green",
+            hp: 30,
+            image: "download.jpg"
+            
+        },  
+        {
+            name: "Joey Tribbiani ",
+            hp: 30,
+            image: "download-1.jpg"
+        },  
+        {
+            name: "Monica Geller",
+            hp: 30,
+            image: "download-4.jpg"
+        },
+        {
+            name: "Ross Geller",
+            hp: 30,
+            image: "download-5.jpg"
+        },
+        {
+            name: "Chandler Bing",
+            hp: 30,
+            image: "download-2.jpg"
+        },
+    ]
+    // chosen hero obj
+    var chosenHero
+    // is here chosen bool
+    var isHeroChosen
+    // is hero alive bool
+    var isHeroAlive
+    // chosen enemy obj
+    var chosenEnemy
+    // is enemy chosen bool
+    var isEnemyChosen
+    // is enemy alive bool
+    var isEnemyAlive
+    // attack function
+    // init game function
+    function initGame () {
+        isHeroChosen = false
+        isEnemyChosen = false
+        var num = Math.floor(12/ charArr.length)
+        for (var i =0; i<charArr.length; i++) {
+            var charThing = $("<div id='character-"+i+"' class='char col-md-"+num+"'value='"+i+"'></div>")
+            charThing.html(
+                "<img src='"+charArr[i].image+"' style='width:150px;height:150px;'/><h3>"+charArr[i].name+"</h3>"
+            )
+            $(".characters").append(charThing)
+        }
+    }
+    
+   $(document).on("click", ".char", function() {
+       if (!isHeroChosen) {
+        alert("Hi!")
+        chosenHero=[$(this).attr("value")]
+        console.log(chosenHero)
+       isHeroChosen= true
+       $(this).addClass("fader")
+       }
+       else if (!isEnemyChosen) {
+        alert("Hi!")
+        chosenEnemy=[$(this).attr("value")]
+        console.log(chosenEnemy)
+       isEnemyChosen= true
+       $(this).addClass("enemy")
+       }
+       
+    })
+    initGame()
+    // reset game function
+})
+    
+</script>
+</body>
+</html>

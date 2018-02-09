@@ -1,0 +1,16 @@
+body {
+    background-color: black;
+}
+h1 {
+    color: pink;
+    font-family: cursive;
+    text-align: center;
+}
+.fader {
+    opacity: 0.5;
+}
+
+.enemy {
+    border-style: solid;
+    border-color: red;
+}
