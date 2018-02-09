@@ -16,7 +16,11 @@
         <h1>THIS IS AN RPG</h1>
         </div>
         <div class="row characters"></div>
-        <div class="row gameplay"></div>
+        <div class="row gameplay">
+            <div class="protag col-md-4"></div>
+            <div class="fight col-md-4"></div>
+            <div class="antag col-md-4"></div>
+        </div>
     </div>
 <script
   src="http://code.jquery.com/jquery-2.2.4.js"
@@ -27,36 +31,47 @@ $(document).ready(function() {
     // array of char objs
     var charArr = [
         {
-            name: "Phoebe Buffay",
-            hp: 30,
-            image: "download-3.jpg"
-
-        },
-        {
-            name: "Rachel Green",
-            hp: 30,
-            image: "download.jpg"
-            
-        },  
-        {
-            name: "Joey Tribbiani ",
-            hp: 30,
-            image: "download-1.jpg"
-        },  
-        {
             name: "Monica Geller",
             hp: 30,
-            image: "download-4.jpg"
+            image: "monica.jpg",
+            attackp: 2,
+            counterp: 2
         },
         {
             name: "Ross Geller",
             hp: 30,
-            image: "download-5.jpg"
+            image: "ross.jpg",
+            attackp: 4,
+            counterp: 2
+        },  
+        {
+            name: "Phoebe Buffay",
+            hp: 30,
+            image: "phoebe.jpg",
+            attackp: 3,
+            counterp: 3
+
+        },  
+        {
+            name: "Rachel Green",
+            hp: 30,
+            image: "rachel.jpg",
+            attackp: 3,
+            counterp: 3
+        },
+        {
+            name: "Joey Tribbiani",
+            hp: 30,
+            image: "joey.jpg",
+            attackp: 2,
+            counterp: 2
         },
         {
             name: "Chandler Bing",
             hp: 30,
-            image: "download-2.jpg"
+            image: "chandler.jpg",
+            attackp: 4,
+            counterp: 1
         },
     ]
     // chosen hero obj
@@ -88,20 +103,33 @@ $(document).ready(function() {
     
    $(document).on("click", ".char", function() {
        if (!isHeroChosen) {
-        alert("Hi!")
         chosenHero=[$(this).attr("value")]
-        console.log(chosenHero)
-       isHeroChosen= true
-       $(this).addClass("fader")
+       // console.log(chosenHero)
+        isHeroChosen= true
+        $(this).addClass("fader")
+        $(".protag").html(
+           "<img src='"+charArr[chosenHero].image+"' style='width:150px;height:150px;'/><h3 id='hHP'>"+charArr[chosenHero].hp+"</h3>")
+        $(".fight").append("VS")
+        
        }
        else if (!isEnemyChosen) {
-        alert("Hi!")
         chosenEnemy=[$(this).attr("value")]
-        console.log(chosenEnemy)
+       // console.log(chosenEnemy)
        isEnemyChosen= true
-       $(this).addClass("enemy")
+       $(this).addClass("fader")
+       $(".antag").html(
+           "<img src='"+charArr[chosenEnemy].image+"' style='width:150px;height:150px;'/><h3 id='eHP'>"+charArr[chosenEnemy].hp+"</h3>")
+           $(".fight").append("<div><button id='attack'>FIGHT</button></div>")
        }
-       
+    })
+    $(document).on("click", "#attack", function() {
+        charArr[chosenHero].hp = charArr[chosenHero].hp - Math.floor(Math.random()*charArr[chosenHero].counterp)
+        console.log(charArr[chosenHero].hp)
+        $("#hHP").text(charArr[chosenHero].hp)
+        charArr[chosenEnemy].hp = charArr[chosenEnemy].hp - Math.floor(Math.random()*charArr[chosenEnemy].attackp)
+        charArr[chosenHero].attackp = charArr[chosenHero].attackp + 1
+        console.log(charArr[chosenHero].attackp)
+        $("#eHP").text(charArr[chosenEnemy].hp)
     })
     initGame()
     // reset game function

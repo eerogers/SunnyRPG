@@ -1,16 +1,24 @@
 body {
     background-color: black;
 }
+
 h1 {
     color: pink;
     font-family: cursive;
     text-align: center;
 }
+
+h3 {
+    color: white;
+}
+
 .fader {
     opacity: 0.5;
 }
 
-.enemy {
-    border-style: solid;
-    border-color: red;
+.fight {
+    color: red;
+    font-size: 40px;
+    text-align: center;
+
 }
