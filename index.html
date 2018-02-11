@@ -13,13 +13,17 @@
 <body>
     <div class="container">
         <div class="row">
-        <h1>THIS IS AN RPG</h1>
+            <div class="col-md-10">
+                <h1>"The Gang Fights for Paddy's Pub"</h1>
+            </div>
+            <div class="col-md-2"></div>
         </div>
         <div class="row characters"></div>
         <div class="row gameplay">
             <div class="protag col-md-4"></div>
-            <div class="fight col-md-4"></div>
+            <div class="fight col-md-2"></div>
             <div class="antag col-md-4"></div>
+            <div class="col-md-2"></div>
         </div>
     </div>
 <script
@@ -31,47 +35,50 @@ $(document).ready(function() {
     // array of char objs
     var charArr = [
         {
-            name: "Monica Geller",
+            name: "Dennis",
             hp: 30,
-            image: "monica.jpg",
-            attackp: 2,
-            counterp: 2
+            image: "dennis.png",
+            charImage: "dennischar.png",
+            baseattack: 2,
+            attack: 2,
+            counter: 4
         },
         {
-            name: "Ross Geller",
+            name: "Dee",
             hp: 30,
-            image: "ross.jpg",
-            attackp: 4,
-            counterp: 2
+            image: "dee.png",
+            charImage: "deechar.png",
+            baseattack: 4,
+            attack: 4,
+            counter: 5
         },  
         {
-            name: "Phoebe Buffay",
+            name: "Charlie",
             hp: 30,
-            image: "phoebe.jpg",
-            attackp: 3,
-            counterp: 3
+            image: "charlie.png",
+            charImage: "charliechar.png",
+            baseattack: 3,
+            attack: 3,
+            counter: 2
 
         },  
         {
-            name: "Rachel Green",
+            name: "Mac",
             hp: 30,
-            image: "rachel.jpg",
-            attackp: 3,
-            counterp: 3
+            image: "mac.png",
+            charImage: "macchar.png",
+            baseattack: 1,
+            attack: 1,
+            counter: 2
         },
         {
-            name: "Joey Tribbiani",
+            name: "Frank",
             hp: 30,
-            image: "joey.jpg",
-            attackp: 2,
-            counterp: 2
-        },
-        {
-            name: "Chandler Bing",
-            hp: 30,
-            image: "chandler.jpg",
-            attackp: 4,
-            counterp: 1
+            image: "frank.png",
+            charImage: "frankchar.png",
+            baseattack: 3,
+            attack: 3,
+            counter: 2
         },
     ]
     // chosen hero obj
@@ -86,7 +93,9 @@ $(document).ready(function() {
     var isEnemyChosen
     // is enemy alive bool
     var isEnemyAlive
-    // attack function
+
+    var defeated = 0
+
     // init game function
     function initGame () {
         isHeroChosen = false
@@ -95,12 +104,12 @@ $(document).ready(function() {
         for (var i =0; i<charArr.length; i++) {
             var charThing = $("<div id='character-"+i+"' class='char col-md-"+num+"'value='"+i+"'></div>")
             charThing.html(
-                "<img src='"+charArr[i].image+"' style='width:150px;height:150px;'/><h3>"+charArr[i].name+"</h3>"
+                "<img src='"+charArr[i].image+"' id='mug' style='width:150px;height:150px;'/><h3>"+charArr[i].name+"</h3>"
             )
             $(".characters").append(charThing)
         }
     }
-    
+
    $(document).on("click", ".char", function() {
        if (!isHeroChosen) {
         chosenHero=[$(this).attr("value")]
@@ -108,28 +117,43 @@ $(document).ready(function() {
         isHeroChosen= true
         $(this).addClass("fader")
         $(".protag").html(
-           "<img src='"+charArr[chosenHero].image+"' style='width:150px;height:150px;'/><h3 id='hHP'>"+charArr[chosenHero].hp+"</h3>")
-        $(".fight").append("VS")
-        
+           "<img src='"+charArr[chosenHero].charImage+"' id='avatar' style='width:150px;height:150px;'/><h3 id='hHP'>"+charArr[chosenHero].hp+"</h3>")
        }
+
        else if (!isEnemyChosen) {
         chosenEnemy=[$(this).attr("value")]
        // console.log(chosenEnemy)
        isEnemyChosen= true
        $(this).addClass("fader")
        $(".antag").html(
-           "<img src='"+charArr[chosenEnemy].image+"' style='width:150px;height:150px;'/><h3 id='eHP'>"+charArr[chosenEnemy].hp+"</h3>")
+           "<img src='"+charArr[chosenEnemy].charImage+"' id= 'avatar' style='width:150px;height:150px;'/><h3 id='eHP'>"+charArr[chosenEnemy].hp+"</h3>")
+           $(".fight").append("<div id='vs'>VS</div>")
            $(".fight").append("<div><button id='attack'>FIGHT</button></div>")
        }
+
+       //need function to declare victory at the end and reset game
+
     })
+    // attack function
     $(document).on("click", "#attack", function() {
-        charArr[chosenHero].hp = charArr[chosenHero].hp - Math.floor(Math.random()*charArr[chosenHero].counterp)
+        charArr[chosenHero].hp = charArr[chosenHero].hp - Math.floor(Math.random()*charArr[chosenEnemy].counter)
         console.log(charArr[chosenHero].hp)
         $("#hHP").text(charArr[chosenHero].hp)
-        charArr[chosenEnemy].hp = charArr[chosenEnemy].hp - Math.floor(Math.random()*charArr[chosenEnemy].attackp)
-        charArr[chosenHero].attackp = charArr[chosenHero].attackp + 1
-        console.log(charArr[chosenHero].attackp)
+        charArr[chosenEnemy].hp = charArr[chosenEnemy].hp - Math.floor(Math.random()*charArr[chosenHero].attack)
+        charArr[chosenHero].attack = charArr[chosenHero].attack + charArr[chosenHero].baseattack
+        console.log(charArr[chosenHero].attack)
         $("#eHP").text(charArr[chosenEnemy].hp)
+
+        if (charArr[chosenEnemy].hp <= 0) {
+           isEnemyChosen= false
+           $(".antag").empty()
+           $(".fight").empty()
+           defeated= defeated + 1 
+       }
+
+       if (defeated === 4) {
+           $(".fight").html("<div id='vic'>" + charArr[chosenHero].name + " Won Paddy's!</div>")
+       }
     })
     initGame()
     // reset game function

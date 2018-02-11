@@ -3,13 +3,19 @@ body {
 }
 
 h1 {
-    color: pink;
-    font-family: cursive;
+    color: white;
+    font-family: courier;
     text-align: center;
+    padding: 20px;
 }
 
 h3 {
-    color: white;
+    color: greenyellow;
+}
+
+.char {
+    text-align: center;
+    font-family: courier;
 }
 
 .fader {
@@ -17,8 +23,46 @@ h3 {
 }
 
 .fight {
-    color: red;
-    font-size: 40px;
+    color: white;
     text-align: center;
+    font-family: courier;
+    font-size: 40px;
+}
 
+.protag {
+    text-align: center;
+    font-family: courier;
+    height: 300px;
+}
+
+.antag {
+    text-align: center;
+    font-family: courier;
+}
+
+#attack {
+    font-size: 20px;
+    font-family: courier;
+    background-color: lightgreen;
+    color: black;
+}
+
+#mug {
+    filter: brightness(1.75);
+    border-style: dotted;
+    border-color: white;
+    border-width: 2px;
+}
+
+#avatar {
+    filter: brightness(1.75);
+    padding: 20px 0px 0px 0px;
+}
+
+#vs {
+    padding: 20px 20px 0px 20px;
+}
+#vic {
+    padding: 50px 0px 0px 0px;
+    color: greenyellow;
 }
