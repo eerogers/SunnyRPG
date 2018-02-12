@@ -21,7 +21,7 @@
         <div class="row characters"></div>
         <div class="row gameplay">
             <div class="protag col-md-4"></div>
-            <div class="fight col-md-2"></div>
+            <div class="fight col-md-2">*Select Your Fighter*</div>
             <div class="antag col-md-4"></div>
             <div class="col-md-2"></div>
         </div>
@@ -36,7 +36,8 @@ $(document).ready(function() {
     var charArr = [
         {
             name: "Dennis",
-            hp: 30,
+            baseHp: 50,
+            hp: 50,
             image: "dennis.png",
             charImage: "dennischar.png",
             baseattack: 2,
@@ -45,7 +46,8 @@ $(document).ready(function() {
         },
         {
             name: "Dee",
-            hp: 30,
+            baseHp: 35,
+            hp: 35,
             image: "dee.png",
             charImage: "deechar.png",
             baseattack: 4,
@@ -54,7 +56,8 @@ $(document).ready(function() {
         },  
         {
             name: "Charlie",
-            hp: 30,
+            baseHp: 60,
+            hp: 60,
             image: "charlie.png",
             charImage: "charliechar.png",
             baseattack: 3,
@@ -64,6 +67,7 @@ $(document).ready(function() {
         },  
         {
             name: "Mac",
+            baseHp: 30,
             hp: 30,
             image: "mac.png",
             charImage: "macchar.png",
@@ -73,7 +77,8 @@ $(document).ready(function() {
         },
         {
             name: "Frank",
-            hp: 30,
+            baseHp: 40,
+            hp: 40,
             image: "frank.png",
             charImage: "frankchar.png",
             baseattack: 3,
@@ -111,28 +116,25 @@ $(document).ready(function() {
     }
 
    $(document).on("click", ".char", function() {
-       if (!isHeroChosen) {
+        if (!isHeroChosen) {
         chosenHero=[$(this).attr("value")]
-       // console.log(chosenHero)
+        console.log(charArr[chosenHero].attack)
         isHeroChosen= true
         $(this).addClass("fader")
         $(".protag").html(
            "<img src='"+charArr[chosenHero].charImage+"' id='avatar' style='width:150px;height:150px;'/><h3 id='hHP'>"+charArr[chosenHero].hp+"</h3>")
-       }
-
-       else if (!isEnemyChosen) {
+        $(".fight").text("*Select an Opponent*")
+        }
+        else if (!isEnemyChosen && charArr[$(this).attr("value")].hp > 0 && charArr[$(this).attr("value")] !== charArr[chosenHero]) {
         chosenEnemy=[$(this).attr("value")]
-       // console.log(chosenEnemy)
-       isEnemyChosen= true
-       $(this).addClass("fader")
-       $(".antag").html(
+        console.log(charArr[chosenEnemy].attack)
+        isEnemyChosen= true
+        $(this).addClass("fader")
+        $(".antag").html(
            "<img src='"+charArr[chosenEnemy].charImage+"' id= 'avatar' style='width:150px;height:150px;'/><h3 id='eHP'>"+charArr[chosenEnemy].hp+"</h3>")
-           $(".fight").append("<div id='vs'>VS</div>")
+           $(".fight").html("<div id='vs'>VS</div>")
            $(".fight").append("<div><button id='attack'>FIGHT</button></div>")
        }
-
-       //need function to declare victory at the end and reset game
-
     })
     // attack function
     $(document).on("click", "#attack", function() {
@@ -144,19 +146,40 @@ $(document).ready(function() {
         console.log(charArr[chosenHero].attack)
         $("#eHP").text(charArr[chosenEnemy].hp)
 
-        if (charArr[chosenEnemy].hp <= 0) {
-           isEnemyChosen= false
-           $(".antag").empty()
-           $(".fight").empty()
-           defeated= defeated + 1 
+        if (charArr[chosenEnemy].hp <= 0 && defeated < 4) {
+            isEnemyChosen= false
+            $(".antag").empty()
+            $(".fight").text("*Select Your Next Opponent*")
+            defeated= defeated + 1 
        }
 
        if (defeated === 4) {
-           $(".fight").html("<div id='vic'>" + charArr[chosenHero].name + " Won Paddy's!</div>")
+            $(".fight").html("<div id='vic'>" + charArr[chosenHero].name + " Won Paddy's!</div>")
+       }
+
+       if (charArr[chosenHero].hp <= 0) {
+            $(".fight").html("<div id='fail'>" + charArr[chosenEnemy].name + " Won Paddy's!</div>")
+       }
+       if (defeated === 4 || charArr[chosenHero].hp <= 0) {
+           $(".fight").append("<div><button id='reset'>RESET</button></div>")
        }
     })
     initGame()
     // reset game function
+    $(document).on("click", "#reset", function() {
+        isHeroChosen = false
+        isEnemyChosen = false
+        defeated = 0
+        //remove fader
+        $(".protag").empty()
+        $(".antag").empty()
+        $(".fight").empty()
+        $(".char").removeClass("fader")
+        for (i=0; i<charArr.length; i++) {
+            charArr[i].attack = charArr[i].baseattack
+            charArr[i].hp = charArr[i].baseHp
+        }
+    })
 })
     
 </script>

@@ -63,6 +63,17 @@ h3 {
     padding: 20px 20px 0px 20px;
 }
 #vic {
-    padding: 50px 0px 0px 0px;
+    padding: 30px 0px 0px 0px;
     color: greenyellow;
+}
+#fail {
+    padding: 30px 0px 0px 0px;
+    color: red;
+}
+
+#reset {
+    font-size: 20px;
+    font-family: courier;
+    background-color: darkcyan;
+    color: black;
 }
