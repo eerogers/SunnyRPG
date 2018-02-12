@@ -23,7 +23,6 @@
             <div class="protag col-md-4"></div>
             <div class="fight col-md-2">*Select Your Fighter*</div>
             <div class="antag col-md-4"></div>
-            <div class="col-md-2"></div>
         </div>
     </div>
 <script
@@ -36,54 +35,54 @@ $(document).ready(function() {
     var charArr = [
         {
             name: "Dennis",
-            baseHp: 50,
-            hp: 50,
+            baseHp: 60,
+            hp: 60,
             image: "dennis.png",
             charImage: "dennischar.png",
             baseattack: 2,
             attack: 2,
-            counter: 4
+            counter: 7
         },
         {
             name: "Dee",
-            baseHp: 35,
-            hp: 35,
+            baseHp: 50,
+            hp: 50,
             image: "dee.png",
             charImage: "deechar.png",
-            baseattack: 4,
-            attack: 4,
-            counter: 5
+            baseattack: 3,
+            attack: 3,
+            counter: 6
         },  
         {
             name: "Charlie",
-            baseHp: 60,
-            hp: 60,
+            baseHp: 70,
+            hp: 70,
             image: "charlie.png",
             charImage: "charliechar.png",
-            baseattack: 3,
-            attack: 3,
-            counter: 2
+            baseattack: 2,
+            attack: 2,
+            counter: 5
 
         },  
         {
             name: "Mac",
-            baseHp: 30,
-            hp: 30,
+            baseHp: 55,
+            hp: 55,
             image: "mac.png",
             charImage: "macchar.png",
-            baseattack: 1,
-            attack: 1,
-            counter: 2
+            baseattack: 2,
+            attack: 2,
+            counter: 5
         },
         {
             name: "Frank",
-            baseHp: 40,
-            hp: 40,
+            baseHp: 45,
+            hp: 45,
             image: "frank.png",
             charImage: "frankchar.png",
             baseattack: 3,
             attack: 3,
-            counter: 2
+            counter: 7
         },
     ]
     // chosen hero obj
@@ -99,8 +98,11 @@ $(document).ready(function() {
     // is enemy alive bool
     var isEnemyAlive
 
+    var timerId
+
     var defeated = 0
 
+    
     // init game function
     function initGame () {
         isHeroChosen = false
@@ -110,60 +112,88 @@ $(document).ready(function() {
             var charThing = $("<div id='character-"+i+"' class='char col-md-"+num+"'value='"+i+"'></div>")
             charThing.html(
                 "<img src='"+charArr[i].image+"' id='mug' style='width:150px;height:150px;'/><h3>"+charArr[i].name+"</h3>"
-            )
+                )
             $(".characters").append(charThing)
         }
     }
 
    $(document).on("click", ".char", function() {
         if (!isHeroChosen) {
-        chosenHero=[$(this).attr("value")]
-        console.log(charArr[chosenHero].attack)
-        isHeroChosen= true
-        $(this).addClass("fader")
-        $(".protag").html(
-           "<img src='"+charArr[chosenHero].charImage+"' id='avatar' style='width:150px;height:150px;'/><h3 id='hHP'>"+charArr[chosenHero].hp+"</h3>")
-        $(".fight").text("*Select an Opponent*")
+            chosenHero=[$(this).attr("value")]
+    //      console.log(charArr[chosenHero].attack)
+            isHeroChosen= true
+            $(this).addClass("fader")
+            $(".protag").html(
+                "<img src='"+charArr[chosenHero].charImage+"' id='avatar' style='width:150px;height:150px;'/><h3 id='hHP'>"+charArr[chosenHero].hp+"</h3>"
+                )
+            $(".fight").text("*Select an Opponent*")
         }
         else if (!isEnemyChosen && charArr[$(this).attr("value")].hp > 0 && charArr[$(this).attr("value")] !== charArr[chosenHero]) {
-        chosenEnemy=[$(this).attr("value")]
-        console.log(charArr[chosenEnemy].attack)
-        isEnemyChosen= true
-        $(this).addClass("fader")
-        $(".antag").html(
-           "<img src='"+charArr[chosenEnemy].charImage+"' id= 'avatar' style='width:150px;height:150px;'/><h3 id='eHP'>"+charArr[chosenEnemy].hp+"</h3>")
-           $(".fight").html("<div id='vs'>VS</div>")
-           $(".fight").append("<div><button id='attack'>FIGHT</button></div>")
+            chosenEnemy=[$(this).attr("value")]
+    //      console.log(charArr[chosenEnemy].attack)
+            isEnemyChosen= true
+            $(this).addClass("fader")
+            $(".antag").html(
+                "<img src='"+charArr[chosenEnemy].charImage+"' id= 'avatar' style='width:150px;height:150px;'/><h3 id='eHP'>"+charArr[chosenEnemy].hp+"</h3>"
+                )
+            $(".fight").html("<div id='vs'>VS</div>")
+            $(".fight").append("<div><button id='attack'>FIGHT</button></div>")
        }
     })
     // attack function
     $(document).on("click", "#attack", function() {
         charArr[chosenHero].hp = charArr[chosenHero].hp - Math.floor(Math.random()*charArr[chosenEnemy].counter)
-        console.log(charArr[chosenHero].hp)
-        $("#hHP").text(charArr[chosenHero].hp)
-        charArr[chosenEnemy].hp = charArr[chosenEnemy].hp - Math.floor(Math.random()*charArr[chosenHero].attack)
+    //  console.log(charArr[chosenHero].hp)
+        charArr[chosenEnemy].hp = charArr[chosenEnemy].hp - Math.floor(Math.random()*charArr[chosenHero].attack)    
         charArr[chosenHero].attack = charArr[chosenHero].attack + charArr[chosenHero].baseattack
-        console.log(charArr[chosenHero].attack)
+    //   console.log(charArr[chosenHero].attack)
+        $(".protag").animate({left:"20px"}, 125, 
+            function(e){
+                $('.protag').animate({left:"0px"
+                }, 125,
+                    function(e){
+                        $('.antag').animate({right:"20px"
+                        }, 125,
+                            function(e){
+                                $('.antag').animate({right:"0px"
+                                }, 125,
+                                )
+                            }
+                        )
+                    }
+                )
+            }
+        )     
+
         $("#eHP").text(charArr[chosenEnemy].hp)
-
+            
         if (charArr[chosenEnemy].hp <= 0 && defeated < 4) {
-            isEnemyChosen= false
+            defeated=defeated +1
             $(".antag").empty()
-            $(".fight").text("*Select Your Next Opponent*")
-            defeated= defeated + 1 
-       }
-
-       if (defeated === 4) {
-            $(".fight").html("<div id='vic'>" + charArr[chosenHero].name + " Won Paddy's!</div>")
-       }
-
-       if (charArr[chosenHero].hp <= 0) {
-            $(".fight").html("<div id='fail'>" + charArr[chosenEnemy].name + " Won Paddy's!</div>")
-       }
-       if (defeated === 4 || charArr[chosenHero].hp <= 0) {
-           $(".fight").append("<div><button id='reset'>RESET</button></div>")
-       }
+        }
+        timerId = setTimeout (function() {
+            $("#hHP").text(charArr[chosenHero].hp)
+            if (charArr[chosenEnemy].hp <= 0 && defeated < 4 && charArr[chosenHero].hp > 0) {
+                isEnemyChosen= false
+                $(".fight").text("*Select Your Next Opponent*")
+            }
+            if (defeated === 4 && charArr[chosenHero].hp > 0) {
+                $(".fight").html("<div id='vic'>" + charArr[chosenHero].name + " Won Paddy's!</div>")
+            }
+            if (charArr[chosenEnemy].hp > 0 && charArr[chosenHero].hp <= 0) {
+                $(".fight").html("<div id='fail'>" + charArr[chosenEnemy].name + " Won Paddy's!</div>")
+                $("#hHP").text("0")
+            }
+            if (charArr[chosenEnemy].hp <= 0 && charArr[chosenHero].hp <=0) {
+                $(".fight").html("<div id='stalemate'>STALEMATE, YOU JABRONI.</div>")
+                $("#hHP").text("0")
+            }
+            if (defeated === 4 || charArr[chosenHero].hp <= 0) {
+                $(".fight").append("<div><button id='reset'>RESET</button></div>")
+            }
+        }, 500)
     })
+
     initGame()
     // reset game function
     $(document).on("click", "#reset", function() {
@@ -173,7 +203,7 @@ $(document).ready(function() {
         //remove fader
         $(".protag").empty()
         $(".antag").empty()
-        $(".fight").empty()
+        $(".fight").text("*Select Your Fighter*")
         $(".char").removeClass("fader")
         for (i=0; i<charArr.length; i++) {
             charArr[i].attack = charArr[i].baseattack
